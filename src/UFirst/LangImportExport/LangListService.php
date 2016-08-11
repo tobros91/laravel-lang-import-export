@@ -31,7 +31,7 @@ class LangListService {
 			array_set($translations, $key, $value);
 		}
 
-		// Run array thrue https://github.com/Riimu/Kit-PHPEncoder to make lang file more readable 
+		// Run array thru https://github.com/Riimu/Kit-PHPEncoder to make lang file more readable 
 		
 		$encoder = new PHPEncoder();
 
