@@ -54,7 +54,7 @@ Finally add the following line to the `providers` array of your `app/config/app.
 ```php
     'providers' => [
         /* ... */
-        'UFirst\LangImportExport\LangImportExportServiceProvider'
+        UFirst\LangImportExport\LangImportExportServiceProvider::class
     ]
 ```
 
