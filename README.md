@@ -8,20 +8,18 @@ It turns some navigation.php file...
 ```php
 <?php
 
-return array (
-  'commands' =>
-  array (
+return [
+  'commands' => [
     'next' => 'Next',
     'prev' => 'Previous',
     'play' => 'Play',
-  ),
-  'tips' =>
-  array (
+  ],
+  'tips' => [
     'next' => 'Navigate to the next item',
     'prev' => 'Navigate to the previous item',
     'play' => 'Autoplay the slide show',
-  ),
-);
+  ],
+];
 ```
 ...to the following CSV...
 
@@ -54,10 +52,10 @@ Run `composer update` to install the package.
 Finally add the following line to the `providers` array of your `app/config/app.php` file:
 
 ```php
-    'providers' => array(
+    'providers' => [
         /* ... */
-        'UFirst\LangImportExport\LangImportExportServiceProvider'
-    )
+        UFirst\LangImportExport\LangImportExportServiceProvider::class
+    ]
 ```
 
 Usage
@@ -68,9 +66,9 @@ The package currently provides two commands, one for exporting the files and one
 ### Export
 
 ```bash
-php artisan lang-export:csv en_US navigation
-php artisan lang-export:csv --output /some/file en_US navigation
-php artisan lang-export:csv --delimiter=";" --enclosure='"' --output=/some/file en_US navigation
+php artisan lang-export:csv en navigation
+php artisan lang-export:csv --output /some/file en navigation
+php artisan lang-export:csv --delimiter=";" --enclosure='"' --output=/some/file en navigation
 ```
 
 You have to pass the __locale__ and the __group__ as arguments. The group is the name of the langauge file without its extension. You may define options for your desired CSV format.
@@ -79,8 +77,8 @@ You have to pass the __locale__ and the __group__ as arguments. The group is the
 
 
 ```
-php artisan lang-import:csv en_US navigation /some/file
-php artisan lang-import:csv --delimiter=";" --enclosure='"' --escape='\\' en_US navigation /some/file
+php artisan lang-import:csv en navigation /some/file
+php artisan lang-import:csv --delimiter=";" --enclosure='"' --escape='\\' en navigation /some/file
 ```
 
 You have to pass  the __locale__, the __group__ and the __path to the CSV file__ as arguments. The group is the name of the langauge file without its extension. You may define options to match the CSV format of your input file.
