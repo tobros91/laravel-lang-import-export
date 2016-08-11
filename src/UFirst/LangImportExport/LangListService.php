@@ -2,6 +2,8 @@
 
 namespace UFirst\LangImportExport;
 
+use \Riimu\Kit\PHPEncoder\PHPEncoder as PHPEncoder;
+
 use Lang;
 
 class LangListService {
@@ -29,9 +31,19 @@ class LangListService {
 			array_set($translations, $key, $value);
 		}
 
-
-
+		// Run array thrue https://github.com/Riimu/Kit-PHPEncoder to make lang file more readable 
 		
+		$encoder = new PHPEncoder();
+
+		$translations = $encoder->encode($translations[$group], [
+		    'array.inline' => false,
+		    'array.omit' => false,
+		    'array.indent' => 4,
+		    'string.escape' => false,
+		    'array.align' => true,
+
+		]);
+			
 
 		$language_file = base_path("resources/lang/{$locale}/{$group}.php");
 
@@ -44,12 +56,13 @@ class LangListService {
 			
 		}
 
+
 		$header = "<?php\n\nreturn ";
 	
 
 		if (is_writable($language_file) && ($fp = fopen($language_file, 'w')) !== FALSE) {
 
-			fputs($fp, $header.var_export($translations[$group], TRUE).";\n");
+			fputs($fp, $header.$translations.";\n");
 			fclose($fp);
 		} else {
 			throw new \Exception("Cannot open language file at {$language_file} for writing. Check the file permissions.");
