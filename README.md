@@ -67,11 +67,14 @@ The package currently provides two commands, one for exporting the files and one
 
 ```bash
 php artisan lang-export:csv en navigation
+php artisan lang-export:csv --mirror=sv,es,ch en navigation
 php artisan lang-export:csv --output /some/file en navigation
 php artisan lang-export:csv --delimiter=";" --enclosure='"' --output=/some/file en navigation
 ```
 
 You have to pass the __locale__ and the __group__ as arguments. The group is the name of the langauge file without its extension. You may define options for your desired CSV format.
+
+You can pass comma separated locales with the --mirror argument to get matching phrases for that locale in the same output.
 
 ### Import
 

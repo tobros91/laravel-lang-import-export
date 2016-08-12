@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use \UFirst\LangImportExport\Facades\LangListService;
 
+use Lang;
+
 class ExportToCsvCommand extends Command {
 
 	/**
@@ -47,6 +49,7 @@ class ExportToCsvCommand extends Command {
 			array('delimiter', 'd', InputOption::VALUE_OPTIONAL, 'The optional delimiter parameter sets the field delimiter (one character only).', ','),
 			array('enclosure', 'c', InputOption::VALUE_OPTIONAL, 'The optional enclosure parameter sets the field enclosure (one character only).', '"'),
 			array('output', 'o', InputOption::VALUE_OPTIONAL, 'Redirect the output to this file'),
+			array('mirror', 'm', InputOption::VALUE_OPTIONAL, 'Locales to mirror from master'),
 		);
 	}
 
@@ -63,7 +66,15 @@ class ExportToCsvCommand extends Command {
 		$delimiter = $this->option('delimiter');
 		$enclosure = $this->option('enclosure');
 
+		$mirror = $this->option('mirror');
+
+		if(!empty($mirror)) {
+			$mirror = explode(",", $mirror);
+		}
+
+
 		$strings = LangListService::loadLangList($locale, $group);
+		
 
 		// Create output device and write CSV.
 		$output = $this->option('output');
@@ -73,7 +84,22 @@ class ExportToCsvCommand extends Command {
 
 		// Write CSV lintes
 		foreach ($strings as $key => $value) {
-			fputcsv($out, array($key, $value), $delimiter, $enclosure);
+
+			
+			$row = array($key, $value);
+
+			foreach($mirror AS $m) {
+
+
+				$mirror_value = Lang::get($key, array(), $m);
+
+				array_push($row, $mirror_value);
+			}
+			
+
+
+
+			fputcsv($out, $row, $delimiter, $enclosure);
 		}
 
 		fclose($out);
