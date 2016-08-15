@@ -81,7 +81,10 @@ You can pass comma separated locales with the --mirror argument to get matching 
 
 ```
 php artisan lang-import:csv en navigation /some/file
+php artisan lang-import:csv en all /some/file
 php artisan lang-import:csv --delimiter=";" --enclosure='"' --escape='\\' en navigation /some/file
 ```
 
 You have to pass  the __locale__, the __group__ and the __path to the CSV file__ as arguments. The group is the name of the langauge file without its extension. You may define options to match the CSV format of your input file.
+
+If you pass __all__ as group it will loop the given file and find all available groups.

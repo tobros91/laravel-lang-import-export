@@ -67,18 +67,67 @@ class ImportFromCsvCommand extends Command {
 		$escape    = $this->option('escape');
 
 		$strings = array();
+		
 
-		// Create output device and write CSV.
-		if (($input_fp = fopen($file, 'r')) === FALSE) {
-			$this->error('Can\'t open the input file!');
+		
+
+		$groups = array();
+
+		// If group = all we find all groups in given csv file and add to group array.
+
+		if($group == 'all') {
+
+			// Get all groups in csv
+
+			// Create output device and write CSV.
+			if (($input_fp = fopen($file, 'r')) === FALSE) {
+				$this->error('Can\'t open the input file!');
+			}
+
+			while (($data = fgetcsv($input_fp, 0, $delimiter, $enclosure, $escape)) !== FALSE) {
+
+				$group_in_csv = explode(".", $data[0]);
+				$group_in_csv = $group_in_csv[0];
+
+				if(!in_array($group_in_csv, $groups)) {
+					array_push($groups, $group_in_csv);
+				}
+
+			}
+
+			fclose($input_fp);
+
+		} else {
+
+			array_push($groups, $group);
+
 		}
 
-		// Write CSV lintes
-		while (($data = fgetcsv($input_fp, 0, $delimiter, $enclosure, $escape)) !== FALSE) {
-			$strings[$data[0]] = $data[1];
-		}
+		// Loop all groups and write lang files
 
-		fclose($input_fp);
-		LangListService::writeLangList($locale, $group, $strings);
+		foreach($groups AS $group) {
+
+			// Create output device and write CSV.
+			if (($input_fp = fopen($file, 'r')) === FALSE) {
+				$this->error('Can\'t open the input file!');
+			}
+
+			// Write CSV lintes
+			while (($data = fgetcsv($input_fp, 0, $delimiter, $enclosure, $escape)) !== FALSE) {
+
+				$group_in_csv = explode(".", $data[0]);
+				$group_in_csv = $group_in_csv[0];
+
+				if($group_in_csv == $group) {
+
+					$strings[$data[0]] = $data[1];
+
+				}
+			}
+
+			fclose($input_fp);
+			LangListService::writeLangList($locale, $group, $strings);
+
+		}
 	}
 }
